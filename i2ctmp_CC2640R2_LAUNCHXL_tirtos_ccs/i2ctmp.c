@@ -192,25 +192,52 @@ bool mpu6050_configGyro(mpu6050_dps_t range){
     return false;
 
 }
-
 //==================================================================================================================================
 /*
- * Get X axis acceleration
+ * Get axis' acceleration
  *
  * */
-float getAccelX(){
-    uint16_t x_raw;
-    x_raw = (mpu6050_readByte(MPU6050_REG_ACCEL_XOUT_H) << 8) | (mpu6050_readByte(MPU6050_REG_ACCEL_XOUT_L));
-    return x_raw;
+float getAccel(mpu6050_axis axis){
+    uint16_t raw;
+    switch (axis) {
+        case MPU6050_X_AXIS:
+            raw = (mpu6050_readByte(MPU6050_REG_ACCEL_XOUT_H) << 8) | (mpu6050_readByte(MPU6050_REG_ACCEL_XOUT_L));
+            break;
+        case MPU6050_Y_AXIS:
+            raw = (mpu6050_readByte(MPU6050_REG_ACCEL_YOUT_H) << 8) | (mpu6050_readByte(MPU6050_REG_ACCEL_YOUT_L));
+            break;
+        case MPU6050_Z_AXIS:
+            raw = (mpu6050_readByte(MPU6050_REG_ACCEL_ZOUT_H) << 8) | (mpu6050_readByte(MPU6050_REG_ACCEL_ZOUT_L));
+            break;
+        default:
+            break;
+    }
+    return raw;
 }
 
 //==================================================================================================================================
+
 /*
  * Get X axis Gyro
  *
  * */
 
-float getGyroX(){
+float getGyro(mpu6050_axis axis){
+    uint16_t raw;
+    switch(axis) {
+        case MPU6050_X_AXIS:
+            raw = (mpu6050_readByte(MPU6050_REG_GYRO_XOUT_H) << 8) | (mpu6050_readByte(MPU6050_REG_GYRO_XOUT_L));
+            break;
+        case MPU6050_Y_AXIS:
+            raw = (mpu6050_readByte(MPU6050_REG_GYRO_YOUT_H) << 8) | (mpu6050_readByte(MPU6050_REG_GYRO_YOUT_L));
+            break;
+        case MPU6050_Z_AXIS:
+            raw = (mpu6050_readByte(MPU6050_REG_GYRO_ZOUT_H) << 8) | (mpu6050_readByte(MPU6050_REG_GYRO_ZOUT_L));
+            break;
+        default:
+            break;
+    }
+        return raw;
 
 }
 //==================================================================================================================================
@@ -256,11 +283,15 @@ void *mainThread(void *arg0)
         mpu6050_configGyro(MPU6050_SCALE_250DPS);
     }
 
-    float AccelX_tmp = getAccelX();
-    Display_printf(display, 0, 0, "X Accel is %f", AccelX_tmp);
+    uint8_t i;
+    for(i = 0; i < 20; i++){
+        float AccelX_tmp = getAccel(MPU6050_X_AXIS);
+        Display_printf(display, 0, 0, "X Accel is %f", AccelX_tmp);
 
+        float GyroX_tmp = getGyro(MPU6050_X_AXIS);
+        Display_printf(display, 0, 0, "X Gyro is %f", GyroX_tmp);
+    }
 
-    Display_printf(display, 0, 0, "I2C closed!");
     I2C_close(i2c);
     Display_printf(display, 0, 0, "I2C closed!");
 
