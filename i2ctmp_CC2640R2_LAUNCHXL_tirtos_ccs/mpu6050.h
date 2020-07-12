@@ -124,6 +124,13 @@ typedef enum
     MPU6050_DLPF_0                = 0b000,
 } mpu6050_dlpf_t;
 
+typedef enum
+{
+    MPU6050_X_AXIS,
+    MPU6050_Y_AXIS,
+    MPU6050_Z_AXIS,
+} mpu6050_axis;
+
 int16_t transferStatus;
 float xAccel,yAccel,zAccel, scaleAccel, scaleGyro, xGyro,yGyro,zGyro;
 int vali, rangeAccel, rangeGyro;
