@@ -8,9 +8,6 @@
 #ifndef MPU6050_H_
 #define MPU6050_H_
 
-#ifndef MPU6050_H
-#define MPU6050_H
-
 #define MPU6050_ADDRESS             (0x68) // 0x69 when AD0 pin to Vcc
 
 #define MPU6050_REG_ACCEL_XOFFS_H     (0x06)
@@ -141,13 +138,10 @@ int8_t mpu6050_readByte(char reg);
 bool mpu6050_reset();
 bool mpu6050_configAccel(mpu6050_range_t range);
 bool mpu6050_configGyro(mpu6050_dps_t range);
-float getAccelX();
-//float getAccelY();
-//float getAccelZ();
-float getGyroX();
-//float getGyroY();
-//float getGyroZ();
+float getAccel(mpu6050_axis axis);
+float getGyro(mpu6050_axis axis);
+
+#define VERBOSE
 
 #endif
 
-#endif /* MPU6050_H_ */
